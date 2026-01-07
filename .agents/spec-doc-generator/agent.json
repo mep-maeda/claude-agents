@@ -1,0 +1,16 @@
+{
+  "name": "spec-doc-generator",
+  "description": "変更仕様書とフローチャートを生成するエージェント",
+  "version": "1.0.0",
+  "author": "mep-maeda",
+  "prompt_file": "prompt.md",
+  "inputs": [
+    "analysis-result.json",
+    "analysis-summary.md"
+  ],
+  "outputs": [
+    "SPEC_CHANGES.html",
+    "flowchart_*.drawio",
+    "TEST_SPECIFICATION.html"
+  ]
+}

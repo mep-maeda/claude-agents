@@ -1,12 +1,25 @@
-# secrets
-.env
-*.key
-*.secret
+# エージェントの出力ファイル（各自のローカルで生成されるもの）
+analysis-result.json
+analysis-summary.md
+SPEC_CHANGES.html
+flowchart_*.drawio
+TEST_SPECIFICATION.html
 
-# local settings
-local_*.yaml
-local_*.json
-
-# editor / OS
+# OS固有ファイル
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# エディタ設定
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ログファイル
+*.log
+
+# 一時ファイル
+*.tmp
+*.temp

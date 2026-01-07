@@ -1,0 +1,15 @@
+{
+  "name": "spec-analyzer",
+  "description": "仕様変更の影響範囲を分析するエージェント",
+  "version": "1.0.0",
+  "author": "mep-maeda",
+  "prompt_file": "prompt.md",
+  "inputs": {
+    "change_request": "変更内容の説明（文字列）",
+    "target_file": "対象ファイルパス（オプション）"
+  },
+  "outputs": [
+    "analysis-result.json",
+    "analysis-summary.md"
+  ]
+}
