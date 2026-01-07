@@ -1,0 +1,12 @@
+# secrets
+.env
+*.key
+*.secret
+
+# local settings
+local_*.yaml
+local_*.json
+
+# editor / OS
+.DS_Store
+Thumbs.db
