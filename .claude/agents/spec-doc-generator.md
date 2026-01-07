@@ -1,3 +1,10 @@
+---
+name: spec-doc-generator
+description: 変更仕様書とフローチャートを生成するエージェント。分析結果から詳細な変更仕様書（HTML）、フローチャート（draw.io）、テスト仕様書を生成します。Use proactively after specification analysis is complete.
+tools: Read, Write, Edit, Bash
+model: inherit
+---
+
 # spec-doc-generator エージェント用改善プロンプト
 
 このプロンプトは、変更仕様書（SPEC_CHANGES.html）の生成品質を向上させるためのガイドラインです。
@@ -383,50 +390,50 @@ flowchart_No{変更点番号}.drawio
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
-        
+
         <!-- 左側：修正前 -->
-        <mxCell id="title_before" value="修正前" 
-                style="text;fontSize=16;fontStyle=1" 
+        <mxCell id="title_before" value="修正前"
+                style="text;fontSize=16;fontStyle=1"
                 vertex="1" parent="1">
           <mxGeometry x="50" y="20" width="100" height="30" as="geometry"/>
         </mxCell>
-        
+
         <!-- 右側：修正後 -->
-        <mxCell id="title_after" value="修正後" 
-                style="text;fontSize=16;fontStyle=1" 
+        <mxCell id="title_after" value="修正後"
+                style="text;fontSize=16;fontStyle=1"
                 vertex="1" parent="1">
           <mxGeometry x="450" y="20" width="100" height="30" as="geometry"/>
         </mxCell>
-        
+
         <!-- 以下、実際のフロー要素 -->
         <!-- プロセスの例 -->
-        <mxCell id="process1" value="画面表示処理&#xa;ShowForm()" 
-                style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" 
+        <mxCell id="process1" value="画面表示処理&#xa;ShowForm()"
+                style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;"
                 vertex="1" parent="1">
           <mxGeometry x="50" y="80" width="150" height="60" as="geometry"/>
         </mxCell>
-        
+
         <!-- 変更箇所（黄色ハイライト） -->
-        <mxCell id="process2_changed" value="イベントハンドラ解放&#xa;-= EventHandler" 
-                style="rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;" 
+        <mxCell id="process2_changed" value="イベントハンドラ解放&#xa;-= EventHandler"
+                style="rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;"
                 vertex="1" parent="1">
           <mxGeometry x="450" y="200" width="180" height="60" as="geometry"/>
         </mxCell>
-        
+
         <!-- 判定の例 -->
-        <mxCell id="decision1" value="Online?" 
-                style="rhombus;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#000000;" 
+        <mxCell id="decision1" value="Online?"
+                style="rhombus;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#000000;"
                 vertex="1" parent="1">
           <mxGeometry x="450" y="300" width="120" height="80" as="geometry"/>
         </mxCell>
-        
+
         <!-- 接続線の例 -->
-        <mxCell id="arrow1" value="" 
-                style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;" 
+        <mxCell id="arrow1" value=""
+                style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;"
                 edge="1" parent="1" source="process1" target="decision1">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        
+
       </root>
     </mxGraphModel>
   </diagram>
@@ -481,4 +488,3 @@ SPEC_CHANGES.htmlの中で、フローチャートへのリンクを以下のよ
 </td>
 </tr>
 ```
-

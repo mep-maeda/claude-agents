@@ -16,7 +16,7 @@ echo ""
 
 # spec-analyzerのインポート
 echo "🔍 spec-analyzer をインポート..."
-claude-code agents import .agents/spec-analyzer
+claude agents import .agents/spec-analyzer
 
 if [ $? -eq 0 ]; then
     echo "✅ spec-analyzer のインポート完了"
@@ -29,7 +29,7 @@ echo ""
 
 # spec-doc-generatorのインポート
 echo "📝 spec-doc-generator をインポート..."
-claude-code agents import .agents/spec-doc-generator
+claude agents import .agents/spec-doc-generator
 
 if [ $? -eq 0 ]; then
     echo "✅ spec-doc-generator のインポート完了"
@@ -45,8 +45,8 @@ echo "=========================================="
 echo ""
 echo "使い方:"
 echo "  1. プロジェクトディレクトリに移動"
-echo "  2. claude-code run spec-analyzer \"変更内容\""
-echo "  3. claude-code run spec-doc-generator"
+echo "  2. claude run spec-analyzer \"変更内容\""
+echo "  3. claude run spec-doc-generator"
 echo ""
 echo "詳細はREADME.mdを参照してください"
 echo ""

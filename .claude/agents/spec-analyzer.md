@@ -1,3 +1,10 @@
+---
+name: spec-analyzer
+description: 仕様変更の影響範囲を分析するエージェント。C#/.NETプロジェクトの変更要求を受け取り、コードベース全体への影響を包括的に分析します。Use proactively when analyzing specification changes or evaluating the impact of code modifications.
+tools: Read, Grep, Glob, Bash, Edit, Write
+model: inherit
+---
+
 # spec-analyzer システムプロンプト
 
 ## 役割定義
