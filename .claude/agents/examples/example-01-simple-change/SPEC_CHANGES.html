@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>変更仕様書 - エラーコード表示機能追加</title>
+<style>
+body {
+    font-family: 'MS Gothic', 'Meiryo', sans-serif;
+    margin: 20px;
+    font-size: 10pt;
+}
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.company {
+    font-size: 12pt;
+    font-weight: bold;
+}
+.revision {
+    text-align: right;
+    margin-bottom: 10px;
+}
+.doc-number {
+    text-align: right;
+    font-size: 9pt;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+    margin-bottom: 20px;
+}
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    vertical-align: top;
+}
+.change-title {
+    font-weight: bold;
+    background-color: #e0e0e0;
+}
+.section-header {
+    font-weight: bold;
+    background-color: #f0f0f0;
+}
+.two-column {
+    width: 50%;
+}
+.highlight {
+    background-color: #FFFF00;
+}
+.label-cell {
+    width: 150px;
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="revision">
+□ 改訂
+</div>
+
+<div class="header">
+<div class="company">MY COMPANY</div>
+</div>
+
+<div class="doc-number">
+文書番号: MYPROJ-SPEC-2026-001<br>
+ページ: 1/1
+</div>
+
+<h2 style="text-align: center;">変更仕様書</h2>
+
+<table>
+<tr>
+<td colspan="2" class="change-title">No.1 エラーダイアログへのエラーコード表示機能追加</td>
+</tr>
+<tr>
+<td class="label-cell">変更点管理番号</td>
+<td>No. 2026-001</td>
+</tr>
+<tr>
+<td class="label-cell">ソース・ファイル名</td>
+<td>
+・ErrorDialog.cs<br>
+・ErrorCodes.cs（新規）<br>
+・Logger.cs
+</td>
+</tr>
+<tr>
+<td class="label-cell">モジュール名</td>
+<td>MyProject.exe</td>
+</tr>
+<tr>
+<td class="label-cell">修正内容</td>
+<td>
+<strong>【背景・目的】</strong><br>
+現状、エラーダイアログにはエラーメッセージのみが表示され、エラーの種類を特定しにくい。
+サポート担当者がユーザーからの問い合わせに対応する際、エラーコードがあれば迅速に原因を特定できる。<br><br>
+
+<strong>【変更概要】</strong><br>
+エラーダイアログのメッセージに、エラーコード（例: E001）を追加表示する。
+エラーコード定義クラスを新規作成し、各エラーに対するコードを一元管理する。
+また、ログ出力にもエラーコードを含めることで、トレーサビリティを向上させる。
+</td>
+</tr>
+<tr>
+<td class="section-header two-column">修正前</td>
+<td class="section-header two-column">修正後</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>1. エラーメッセージの表示</strong><br>
+1) ErrorDialog.Show(message)を呼び出し<br>
+2) メッセージのみを表示<br>
+&nbsp;&nbsp;例: 「ファイルが見つかりません」<br>
+</td>
+<td class="two-column">
+<strong>1. エラーメッセージの表示</strong><br>
+1) <span class="highlight">ErrorDialog.Show(errorCode, message)を呼び出し</span><br>
+2) <span class="highlight">エラーコードとメッセージを表示</span><br>
+&nbsp;&nbsp;例: <span class="highlight">「[E001] ファイルが見つかりません」</span><br>
+3) <span class="highlight">エラーコード未指定の場合は、既存の動作を維持（後方互換性）</span><br>
+<br>
+<strong>【後方互換性】</strong> ErrorDialog.Show(message)のオーバーロードを維持。エラーコード未指定の場合は、デフォルト値（E999: 不明なエラー）を使用<br>
+</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>2. エラーコード定義</strong><br>
+1) データなし<br>
+</td>
+<td class="two-column">
+<strong>2. エラーコード定義</strong><br>
+1) <span class="highlight">ErrorCodesクラス（新規）を作成</span><br>
+2) <span class="highlight">各エラーに対するコードを定義</span><br>
+&nbsp;&nbsp;a) <span class="highlight">E001: ファイルが見つかりません</span><br>
+&nbsp;&nbsp;b) <span class="highlight">E002: ファイルアクセス権限エラー</span><br>
+&nbsp;&nbsp;c) <span class="highlight">E003: ネットワーク接続エラー</span><br>
+&nbsp;&nbsp;d) <span class="highlight">E999: 不明なエラー（デフォルト）</span><br>
+3) <span class="highlight">静的クラスとして定義し、プロジェクト全体から参照可能</span><br>
+<br>
+<strong>【注意事項】</strong> エラーコードの命名規則を文書化すること。E001-E099: ファイル関連、E100-E199: ネットワーク関連など、カテゴリごとに範囲を決める<br>
+</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>3. ログ出力形式</strong><br>
+1) Logger.Log(message)でメッセージのみ記録<br>
+&nbsp;&nbsp;例: 「ファイルが見つかりません」<br>
+</td>
+<td class="two-column">
+<strong>3. ログ出力形式</strong><br>
+1) <span class="highlight">Logger.Log(errorCode, message)でエラーコード付きで記録</span><br>
+&nbsp;&nbsp;例: <span class="highlight">「[E001] ファイルが見つかりません」</span><br>
+2) <span class="highlight">エラーコード未指定の場合は、既存の動作を維持</span><br>
+<br>
+<strong>【後方互換性】</strong> Logger.Log(message)のオーバーロードを維持。既存のログ処理への影響なし<br>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

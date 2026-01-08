@@ -1,0 +1,68 @@
+{
+  "timestamp": "2026-01-08T10:30:00Z",
+  "change_request": "エラーダイアログのメッセージに、エラーコードを追加表示",
+  "affected_components": [
+    {
+      "file": "ErrorDialog.cs",
+      "type": "class",
+      "impact": "direct",
+      "risk_level": "high",
+      "reason": "メッセージ表示ロジックの変更が必要。既存のエラー表示機能に影響する可能性がある。",
+      "line_references": "lines 45-78"
+    },
+    {
+      "file": "ErrorCodes.cs",
+      "type": "class",
+      "impact": "direct",
+      "risk_level": "medium",
+      "reason": "新規にエラーコード定義クラスを追加。エラーコードの一意性を確保する必要がある。",
+      "line_references": "new file"
+    },
+    {
+      "file": "Logger.cs",
+      "type": "class",
+      "impact": "indirect",
+      "risk_level": "low",
+      "reason": "ログ出力形式にエラーコードを含める必要がある。既存のログ処理への影響は最小限。",
+      "line_references": "lines 120-145"
+    }
+  ],
+  "dependencies": {
+    "internal": [
+      "MessageBox（標準ライブラリ）",
+      "String.Format（.NET Framework）"
+    ],
+    "external": [
+      "System.Windows.Forms",
+      ".NET Framework 4.7.2"
+    ]
+  },
+  "breaking_changes": [
+    {
+      "description": "ErrorDialog.Show()メソッドのシグネチャ変更の可能性",
+      "affected_consumers": "ErrorDialogを呼び出している全てのコード（約15箇所）",
+      "mitigation": "オーバーロードを追加し、既存のシグネチャを維持。エラーコード未指定の場合は、デフォルト値（E999）を使用。"
+    }
+  ],
+  "test_coverage": {
+    "existing_tests_affected": [
+      "ErrorDialogTest.cs（全5件のテストケースを更新する必要あり）"
+    ],
+    "new_tests_needed": [
+      "ErrorCodesTest.cs（エラーコード定義の検証）",
+      "ErrorDialog_WithErrorCode_Test（エラーコード付き表示のテスト）",
+      "Logger_ErrorCodeFormat_Test（ログ出力形式のテスト）"
+    ],
+    "coverage_gaps": [
+      "エラーコードが未定義の場合の動作（フォールバック処理）"
+    ]
+  },
+  "recommendations": [
+    "【優先度: 高】ErrorDialog.Show()のオーバーロードを追加し、後方互換性を維持すること",
+    "【優先度: 高】エラーコードの命名規則を文書化すること（例: E001-E099: ファイル関連、E100-E199: ネットワーク関連）",
+    "【優先度: 中】エラーコードが未定義の場合のデフォルト値（E999: 不明なエラー）を設定すること",
+    "【優先度: 中】既存のエラー表示箇所（15箇所）を段階的に移行すること",
+    "【優先度: 低】将来的にエラーコードと多言語メッセージのマッピングを検討すること"
+  ],
+  "estimated_effort": "small - 理由: 影響範囲が限定的（3ファイル）、既存機能への影響は最小限、実装は比較的単純"
+}

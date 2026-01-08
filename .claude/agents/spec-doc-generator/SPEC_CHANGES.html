@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>変更仕様書</title>
+<style>
+body {
+    font-family: 'MS Gothic', 'Meiryo', sans-serif;
+    margin: 20px;
+    font-size: 10pt;
+}
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.company {
+    font-size: 12pt;
+    font-weight: bold;
+}
+.revision {
+    text-align: right;
+    margin-bottom: 10px;
+}
+.doc-number {
+    text-align: right;
+    font-size: 9pt;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+    margin-bottom: 20px;
+}
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    vertical-align: top;
+}
+.change-title {
+    font-weight: bold;
+    background-color: #e0e0e0;
+}
+.section-header {
+    font-weight: bold;
+    background-color: #f0f0f0;
+}
+.two-column {
+    width: 50%;
+}
+.highlight {
+    background-color: #FFFF00;
+}
+.number-cell {
+    width: 80px;
+}
+.label-cell {
+    width: 150px;
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="revision">
+□ 改訂
+</div>
+
+<div class="header">
+<div class="company">MITSUBISHI ELECTRIC CORPORATION</div>
+</div>
+
+<div class="doc-number">
+文書番号: MDS-PTE-SPEC-2026-001<br>
+ページ: 1/1
+</div>
+
+<h2 style="text-align: center;">変更仕様書</h2>
+
+<table>
+<tr>
+<td colspan="2" class="change-title">No.1 ダウンロード残り時間の動的更新機能追加</td>
+</tr>
+<tr>
+<td class="label-cell">変更点管理番号</td>
+<td>No. 2026-001</td>
+</tr>
+<tr>
+<td class="label-cell">ソース・ファイル名</td>
+<td>
+・MDS_PTE.ini (開発版)<br>
+・MDS_PTE.ini (セットアップパッケージ版)<br>
+・ProgressInfo.cs<br>
+・dlgDLProgress.cs<br>
+・frmLogDataDownload.cs
+</td>
+</tr>
+<tr>
+<td class="label-cell">モジュール名</td>
+<td>MDS_PTE.exe</td>
+</tr>
+<tr>
+<td class="label-cell">フローチャート</td>
+<td>
+<a href="flowchart_No2026-001.drawio">フローチャート参照 (flowchart_No2026-001.drawio)</a><br>
+※draw.ioまたはdraw.io Desktop、diagrams.netで開いて確認してください
+</td>
+</tr>
+<tr>
+<td class="label-cell">修正内容</td>
+<td>
+<strong>【背景・目的】</strong><br>
+現状、ダウンロード開始時に表示される予測時間は固定値であり、実際のダウンロード進捗状況を反映していない。
+ユーザーからは、より正確な残り時間の表示が求められている。<br><br>
+
+<strong>【変更概要】</strong><br>
+ダウンロード進捗に応じて残り時間を動的に更新する機能を追加する。
+各記録種別（DATA_KIND）ごとに1car当たりのダウンロード予測時間をINIファイルに定義し、
+1car完了するごとに実測時間に基づいて残り時間を再計算して表示する。
+また、1carのダウンロードに1分以上かかる場合は、1分ごとに残り時間をカウントダウンする。
+</td>
+</tr>
+<tr>
+<td class="section-header two-column">修正前</td>
+<td class="section-header two-column">修正後</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>1. ダウンロード予測時間の算出</strong><br>
+1) ダウンロード開始時に一度だけ予測時間を計算<br>
+2) 総car数×記録種別ごとの固定時間で算出<br>
+3) 算出した予測時間を画面に表示<br>
+<br>
+<strong>2. 予測時間の表示</strong><br>
+1) ダウンロード開始時の予測時間を継続表示<br>
+2) ダウンロード進捗による更新なし<br>
+</td>
+<td class="two-column">
+<strong>1. ダウンロード予測時間の算出</strong><br>
+1) ダウンロード開始時に予測時間を計算<br>
+2) <span class="highlight">総car数×記録種別ごとの1car当たり予測時間</span>で算出<br>
+3) 算出した予測時間を画面に表示<br>
+4) <span class="highlight">完了car記録リストを初期化</span><br>
+<br>
+<strong>【制約事項】</strong> 初期予測時間の精度は1car当たりのダウンロード時間の設定値に依存<br>
+<strong>【計算ロジック】</strong> INIファイルから1car当たりの予測時間を読み込み、残り時間 = 総car数 × 1car当たり予測時間、最小値は1分<br>
+<br>
+<strong>2. 予測時間の表示</strong><br>
+1) ダウンロード開始時の予測時間を表示<br>
+2) <span class="highlight">car完了ごとに実測時間を記録し残り時間を再計算</span><br>
+&nbsp;&nbsp;a) <span class="highlight">1両目完了時: 残り時間 = 実測時間 × 残りcar数</span><br>
+&nbsp;&nbsp;b) <span class="highlight">2両目以降完了時: 残り時間 = 平均実測時間 × 残りcar数</span><br>
+&nbsp;&nbsp;c) <span class="highlight">計算結果を分単位に切り上げ（最小値: 1分）</span><br>
+&nbsp;&nbsp;d) <span class="highlight">再計算した時間を画面に表示</span><br>
+3) <span class="highlight">1car当たり時間が1分以上の場合</span><br>
+&nbsp;&nbsp;a) <span class="highlight">1分ごとに残り時間を1分減算</span><br>
+&nbsp;&nbsp;b) <span class="highlight">残り時間が1分以下になったらカウントダウン停止</span><br>
+4) <span class="highlight">全car完了時</span><br>
+&nbsp;&nbsp;a) <span class="highlight">残り時間を0に設定</span><br>
+&nbsp;&nbsp;b) <span class="highlight">カウントダウンタイマーを停止</span><br>
+<br>
+<strong>【制約事項】</strong> 実測時間ベースの計算により、進捗に応じて精度が向上。計算結果は分単位に切り上げ、最小値は1分。残り1分未満はカウントダウンせず、1分表示を維持。ネットワーク速度の変動や実機の状態により、実際の残り時間と誤差が生じる可能性がある<br>
+<strong>【計算ロジック】</strong> 1両目完了時は実測ダウンロード時間を記録し残り時間 = 実測時間 × 残りcar数、2両目以降完了時は完了したcar全ての平均時間を計算し残り時間 = 平均時間 × 残りcar数、全car完了時は残り時間を0に設定しカウントダウンタイマーを停止<br>
+</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>3. 設定ファイル構成</strong><br>
+1) MDS_PTE.ini [Timer]セクション<br>
+&nbsp;&nbsp;a) DLDiagnosticDataTime=180000<br>
+&nbsp;&nbsp;b) DLEventLogTime=25000<br>
+&nbsp;&nbsp;c) DLRTDMTime=60000<br>
+&nbsp;&nbsp;d) （各記録種別の総時間のみ定義）<br>
+</td>
+<td class="two-column">
+<strong>3. 設定ファイル構成</strong><br>
+1) MDS_PTE.ini [Timer]セクション（既存維持）<br>
+2) <span class="highlight">MDS_PTE.ini [EstimatedDownloadTime]セクション</span><br>
+&nbsp;&nbsp;a) <span class="highlight">EventLog=25000（1car当たりミリ秒）</span><br>
+&nbsp;&nbsp;b) <span class="highlight">RTDM=60000</span><br>
+&nbsp;&nbsp;c) <span class="highlight">Diagnostic=180000</span><br>
+&nbsp;&nbsp;d) <span class="highlight">SelfTest=90000</span><br>
+&nbsp;&nbsp;e) <span class="highlight">SubsystemSWVersion=150000</span><br>
+&nbsp;&nbsp;f) <span class="highlight">EDF=60000</span><br>
+&nbsp;&nbsp;g) <span class="highlight">DATA_KIND列挙体のメンバ名をキーとして定義</span><br>
+<br>
+<strong>【後方互換性】</strong> 既存のINIファイル[Timer]セクションの設定値は維持。[EstimatedDownloadTime]セクションが存在しない場合、[Timer]セクションの設定値にフォールバック<br>
+<strong>【注意事項】</strong> デプロイ時は2箇所のMDS_PTE.iniファイル全てを更新すること（開発版、セットアップパッケージ版）。各記録種別の1car当たり時間は、実測値に基づいて調整が必要。DATA_KIND列挙体のメンバ名とINIファイルのキー名を一致させること<br>
+</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>4. 進捗情報の通知</strong><br>
+1) ダウンロード処理から進捗ダイアログに進捗情報を通知<br>
+2) ProgressInfo.Messageを使用<br>
+</td>
+<td class="two-column">
+<strong>4. 進捗情報の通知</strong><br>
+1) ダウンロード処理から進捗ダイアログに進捗情報を通知<br>
+2) ProgressInfo.Messageを使用<br>
+3) <span class="highlight">car完了時に時間情報を追加送信</span><br>
+&nbsp;&nbsp;a) <span class="highlight">Message="CAR_COMPLETED"</span><br>
+&nbsp;&nbsp;b) <span class="highlight">CarTimeInfo（実測時間情報）を設定</span><br>
+&nbsp;&nbsp;c) <span class="highlight">後方互換性のためSTATUS_TEXT_OK検出も維持</span><br>
+<br>
+<strong>【後方互換性】</strong> CarTimeInfo情報が提供されない場合、従来のINI固定値方式で残り時間を計算。既存のSTATUS_TEXT_OK検出処理も維持。既存のダウンロード機能への影響なし<br>
+</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>5. car完了時刻の記録</strong><br>
+1) データなし<br>
+</td>
+<td class="two-column">
+<strong>5. car完了時刻の記録</strong><br>
+1) <span class="highlight">ダウンロード開始時に開始時刻を記録</span><br>
+2) <span class="highlight">ダウンロード成功時に終了時刻を記録</span><br>
+3) <span class="highlight">実測ダウンロード時間を計算</span><br>
+&nbsp;&nbsp;a) <span class="highlight">リクエスト情報（car番号等）</span><br>
+&nbsp;&nbsp;b) <span class="highlight">開始時刻</span><br>
+&nbsp;&nbsp;c) <span class="highlight">終了時刻</span><br>
+&nbsp;&nbsp;d) <span class="highlight">経過時間</span><br>
+4) <span class="highlight">CarDownloadTimeInfoオブジェクトを生成</span><br>
+5) <span class="highlight">進捗ダイアログに通知</span><br>
+</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>6. ダウンロード中断時の処理</strong><br>
+1) キャンセルボタン押下で中断<br>
+2) ダウンロード処理を停止<br>
+</td>
+<td class="two-column">
+<strong>6. ダウンロード中断時の処理</strong><br>
+1) キャンセルボタン押下で中断<br>
+2) ダウンロード処理を停止<br>
+3) <span class="highlight">残り時間更新タイマーを停止</span><br>
+</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>7. データ構造</strong><br>
+1) ProgressInfoクラス<br>
+&nbsp;&nbsp;a) Message（進捗メッセージ）<br>
+&nbsp;&nbsp;b) Current、Total（進捗カウント）<br>
+</td>
+<td class="two-column">
+<strong>7. データ構造</strong><br>
+1) ProgressInfoクラス<br>
+&nbsp;&nbsp;a) Message（進捗メッセージ）<br>
+&nbsp;&nbsp;b) Current、Total（進捗カウント）<br>
+&nbsp;&nbsp;c) <span class="highlight">CarTimeInfo（car完了時の時間情報）</span><br>
+2) <span class="highlight">CarDownloadTimeInfoクラス（新規）</span><br>
+&nbsp;&nbsp;a) <span class="highlight">Request（リクエスト情報）</span><br>
+&nbsp;&nbsp;b) <span class="highlight">StartTime（開始時刻）</span><br>
+&nbsp;&nbsp;c) <span class="highlight">EndTime（終了時刻）</span><br>
+&nbsp;&nbsp;d) <span class="highlight">ElapsedTime（経過時間）</span><br>
+</td>
+</tr>
+<tr>
+<td class="two-column">
+<strong>8. リソース解放処理</strong><br>
+1) ダイアログクローズ時にコンポーネント破棄<br>
+</td>
+<td class="two-column">
+<strong>8. リソース解放処理</strong><br>
+1) ダイアログクローズ時にコンポーネント破棄<br>
+2) <span class="highlight">残り時間更新タイマーを停止・破棄</span><br>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
