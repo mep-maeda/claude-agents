@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>試験仕様書</title>
+<style>
+body {
+    font-family: 'MS Gothic', 'Meiryo', sans-serif;
+    margin: 20px;
+    font-size: 10pt;
+}
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.company {
+    font-size: 12pt;
+    font-weight: bold;
+}
+.revision {
+    text-align: right;
+    margin-bottom: 10px;
+}
+.doc-number {
+    text-align: right;
+    font-size: 9pt;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+    margin-bottom: 20px;
+    page-break-inside: avoid;
+}
+th, td {
+    border: 1px solid black;
+    padding: 6px;
+    vertical-align: top;
+    font-size: 9pt;
+}
+th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+.col-item {
+    width: 40px;
+    text-align: center;
+}
+.col-test-item {
+    width: 150px;
+}
+.col-no {
+    width: 30px;
+    text-align: center;
+}
+.col-operation {
+    width: 250px;
+}
+.col-confirmation {
+    width: 200px;
+}
+.col-result {
+    width: 40px;
+    text-align: center;
+}
+.col-date {
+    width: 80px;
+}
+.rowspan-cell {
+    vertical-align: middle;
+    text-align: center;
+}
+.supplement-table {
+    width: 60%;
+    margin: 10px 0;
+}
+.table-title {
+    font-weight: bold;
+    margin: 10px 0 5px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="revision">
+□ 改訂
+</div>
+
+<div class="header">
+<div class="company">MITSUBISHI ELECTRIC CORPORATION</div>
+</div>
+
+<div class="doc-number">
+文書番号: MDS-PTE-TEST-2026-001<br>
+ページ: 1/3
+</div>
+
+<h2 style="text-align: center;">試験仕様書</h2>
+<h3 style="text-align: center;">ダウンロード残り時間動的更新機能</h3>
+
+<table>
+<thead>
+<tr>
+<th class="col-item">項番</th>
+<th class="col-test-item">試験項目</th>
+<th class="col-no">No</th>
+<th class="col-operation">フォーマット／操作・入力内容</th>
+<th class="col-confirmation">確認内容</th>
+<th class="col-result">確認結果</th>
+<th class="col-date">実施日付</th>
+</tr>
+</thead>
+<tbody>
+<!-- 正常系テスト -->
+<tr>
+<td class="rowspan-cell" rowspan="5">1</td>
+<td rowspan="5">初期表示確認</td>
+<td>1</td>
+<td>
+1) MDS_PTE起動<br>
+2) ログデータダウンロード画面を開く<br>
+3) EventLog、3car選択<br>
+4) ダウンロードボタン押下
+</td>
+<td>
+初期予測時間が正しく表示されること。<br>
+(3car × 25秒 = 75秒 ≒ 2分)
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>
+1) MDS_PTE起動<br>
+2) ログデータダウンロード画面を開く<br>
+3) RTDM、5car選択<br>
+4) ダウンロードボタン押下
+</td>
+<td>
+初期予測時間が正しく表示されること。<br>
+(5car × 60秒 = 300秒 = 5分)
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>
+1) MDS_PTE起動<br>
+2) ログデータダウンロード画面を開く<br>
+3) Diagnostic、2unit選択<br>
+4) ダウンロードボタン押下
+</td>
+<td>
+初期予測時間が正しく表示されること。<br>
+(2unit × 180秒 = 360秒 = 6分)
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>
+1) MDS_PTE起動<br>
+2) ログデータダウンロード画面を開く<br>
+3) EventLog、1car選択<br>
+4) ダウンロードボタン押下
+</td>
+<td>
+最小時間（1分）が表示されること。<br>
+(1car × 25秒 = 25秒 → 最小1分)
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>
+1) 上記テストで表示された予測時間を記録
+</td>
+<td>
+表 1.1.1-1 参照。<br>
+各DATA_KINDの予測時間が正しいこと。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<!-- car完了ごとの更新 -->
+<tr>
+<td class="rowspan-cell" rowspan="4">2</td>
+<td rowspan="4">car完了時の<br>残り時間更新</td>
+<td>1</td>
+<td>
+1) EventLog、3car選択してダウンロード開始<br>
+2) 1car目完了時の残り時間を確認<br>
+3) 2car目完了時の残り時間を確認<br>
+4) 3car目完了時の残り時間を確認
+</td>
+<td>
+car完了ごとに残り時間が減少すること。<br>
+表 1.2.1-1 参照。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>
+1) RTDM、5car選択してダウンロード開始<br>
+2) 各car完了時の残り時間を記録
+</td>
+<td>
+残り時間の計算式が正しいこと。<br>
+残り時間 = (総car数 - 完了car数) × 1carあたり時間
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>
+1) Diagnostic、3unit選択してダウンロード開始<br>
+2) 各unit完了時の残り時間を記録
+</td>
+<td>
+unit単位のデータ種別でも正しく更新されること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>
+1) 完了したcarの残り時間表示を記録
+</td>
+<td>
+全car完了時に残り時間が0分になること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<!-- タイマーカウントダウン -->
+<tr>
+<td class="rowspan-cell" rowspan="5">3</td>
+<td rowspan="5">1分ごとの<br>カウントダウン</td>
+<td>1</td>
+<td>
+1) RTDM、10car選択（予測時間10分以上）<br>
+2) ダウンロード開始<br>
+3) 開始後1分経過時の残り時間確認<br>
+4) 開始後2分経過時の残り時間確認<br>
+5) 開始後3分経過時の残り時間確認
+</td>
+<td>
+1分ごとに残り時間が1分ずつ減少すること。<br>
+(例: 10分 → 9分 → 8分 → 7分)
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>
+1) Diagnostic、5unit選択（予測時間15分）<br>
+2) ダウンロード開始<br>
+3) 1分ごとの残り時間変化を記録
+</td>
+<td>
+タイマーが正確に1分間隔で動作すること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>
+1) RTDM、10car選択<br>
+2) ダウンロード開始<br>
+3) 残り時間が2分になるまで待機<br>
+4) その後の残り時間変化を確認
+</td>
+<td>
+残り時間が1分になったらカウントダウンが停止すること。<br>
+(1分表示を維持)
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>
+1) EventLog、3car選択（予測時間2分未満）<br>
+2) ダウンロード開始<br>
+3) タイマーカウントダウンの動作確認
+</td>
+<td>
+1carあたり時間が1分未満の場合、<br>タイマーカウントダウンが開始しないこと。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>
+1) 複数のDATA_KINDでcar完了とタイマーの<br>&nbsp;&nbsp;相互作用を確認
+</td>
+<td>
+car完了による更新とタイマーカウントダウンが<br>正しく連携すること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<!-- 異常系テスト -->
+<tr>
+<td class="rowspan-cell" rowspan="3">4</td>
+<td rowspan="3">ダウンロード<br>中断処理</td>
+<td>1</td>
+<td>
+1) RTDM、5car選択してダウンロード開始<br>
+2) 2car完了後、キャンセルボタン押下<br>
+3) 確認ダイアログでOK選択
+</td>
+<td>
+ダウンロードが中断されること。<br>
+タイマーが停止すること。<br>
+残り時間表示が変化しないこと。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>
+1) Diagnostic、3unit選択してダウンロード開始<br>
+2) ダウンロード中にダイアログを閉じる
+</td>
+<td>
+タイマーが正しく破棄されること。<br>
+メモリリークが発生しないこと。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>
+1) ダウンロード中にネットワークケーブル抜線<br>
+2) エラー発生後の残り時間表示を確認
+</td>
+<td>
+エラー発生時もタイマーが正常に停止すること。<br>
+異常終了しないこと。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<!-- 境界値テスト -->
+<tr>
+<td class="rowspan-cell" rowspan="4">5</td>
+<td rowspan="4">境界値テスト</td>
+<td>1</td>
+<td>
+1) EventLog、1car選択<br>
+2) ダウンロード開始して完了まで確認
+</td>
+<td>
+最小編成（1car）で正常動作すること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>
+1) RTDM、最大編成（10car）選択<br>
+2) ダウンロード開始して完了まで確認
+</td>
+<td>
+最大編成で正常動作すること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>
+1) MDS_PTE.iniのDefaultPerCarTimeを1000に設定<br>
+2) EventLog、3car選択してダウンロード
+</td>
+<td>
+非常に短い時間（1秒）でも正常動作すること。<br>
+最小1分表示が適用されること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>
+1) MDS_PTE.iniのDefaultPerCarTimeを3600000に設定<br>
+2) RTDM、2car選択してダウンロード
+</td>
+<td>
+非常に長い時間（60分）でも正常動作すること。<br>
+タイマーが正しく動作すること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<!-- 設定ファイルテスト -->
+<tr>
+<td class="rowspan-cell" rowspan="5">6</td>
+<td rowspan="5">設定ファイル<br>読み込みテスト</td>
+<td>1</td>
+<td>
+1) MDS_PTE.iniに[Timer_EventLog]セクション追加<br>
+2) DefaultPerCarTime=30000設定<br>
+3) EventLog、3car選択してダウンロード
+</td>
+<td>
+新しい設定値（30秒/car）が反映されること。<br>
+初期予測時間が2分（90秒 ≒ 2分）になること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>
+1) MDS_PTE.iniから[Timer_EventLog]セクション削除<br>
+2) EventLog、3car選択してダウンロード
+</td>
+<td>
+既存の[Timer]セクションのDLEventLogTimeに<br>フォールバックすること。<br>
+(25000ms = 25秒/car)
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>
+1) 全てのDATA_KIND設定を確認<br>
+2) 表 1.6.3-1 参照
+</td>
+<td>
+全DATA_KINDの設定が正しく読み込まれること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>
+1) MDS_PTE.iniのDefaultPerCarTimeを不正値に設定<br>
+&nbsp;&nbsp;(例: "abc", 空文字, 負数)<br>
+2) EventLog、3car選択してダウンロード
+</td>
+<td>
+デフォルト値（60000ms = 1分）が使用されること。<br>
+エラーが発生しないこと。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>
+1) 3箇所のMDS_PTE.iniファイルの内容を比較<br>
+&nbsp;&nbsp;・開発版<br>
+&nbsp;&nbsp;・trunk版<br>
+&nbsp;&nbsp;・セットアップパッケージ版
+</td>
+<td>
+3箇所のINIファイルが全て同じ設定であること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<!-- リグレッションテスト -->
+<tr>
+<td class="rowspan-cell" rowspan="4">7</td>
+<td rowspan="4">既存機能<br>リグレッション<br>テスト</td>
+<td>1</td>
+<td>
+1) EventLog通常ダウンロード（新機能なし想定）<br>
+2) RTDM通常ダウンロード<br>
+3) Diagnostic通常ダウンロード<br>
+4) SelfTest通常ダウンロード
+</td>
+<td>
+既存のダウンロード機能に影響がないこと。<br>
+全てのDATA_KINDで正常にダウンロードできること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>
+1) RTDM ConversionMode（変換あり）でダウンロード<br>
+2) 既存のSetEstimateDownloadTime(bool, int, int, double)<br>
+&nbsp;&nbsp;オーバーロードが使用されることを確認
+</td>
+<td>
+RTDM専用の時間計算ロジックが維持されること。<br>
+変換時間が正しく計算されること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>
+1) EDF、SDF、SubsystemSWVersionなど<br>
+&nbsp;&nbsp;unit単位のデータ種別をダウンロード
+</td>
+<td>
+unit単位のデータ種別で正常動作すること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>
+1) 複数のDATA_KINDを連続してダウンロード<br>
+2) タイマーのリセットと再初期化を確認
+</td>
+<td>
+連続ダウンロード時にタイマーが正しく<br>リセット・再初期化されること。
+</td>
+<td>□</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<div class="table-title">表 1.1.1-1 初期予測時間確認表</div>
+<table class="supplement-table">
+<thead>
+<tr>
+<th>No.</th>
+<th>DATA_KIND</th>
+<th>car/unit数</th>
+<th>1carあたり時間</th>
+<th>予測時間</th>
+<th>確認結果</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>EventLog</td><td>3car</td><td>25秒</td><td>2分</td><td>□</td></tr>
+<tr><td>2</td><td>RTDM</td><td>5car</td><td>60秒</td><td>5分</td><td>□</td></tr>
+<tr><td>3</td><td>Diagnostic</td><td>2unit</td><td>180秒</td><td>6分</td><td>□</td></tr>
+<tr><td>4</td><td>SelfTest</td><td>3unit</td><td>90秒</td><td>5分</td><td>□</td></tr>
+<tr><td>5</td><td>EDF</td><td>4unit</td><td>60秒</td><td>4分</td><td>□</td></tr>
+</tbody>
+</table>
+
+<div class="table-title">表 1.2.1-1 car完了時の残り時間変化（EventLog 3car）</div>
+<table class="supplement-table">
+<thead>
+<tr>
+<th>No.</th>
+<th>完了car数</th>
+<th>残りcar数</th>
+<th>計算式</th>
+<th>期待値</th>
+<th>実測値</th>
+<th>確認結果</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>0</td><td>3</td><td>3 × 25秒</td><td>2分</td><td></td><td>□</td></tr>
+<tr><td>2</td><td>1</td><td>2</td><td>2 × 25秒</td><td>1分</td><td></td><td>□</td></tr>
+<tr><td>3</td><td>2</td><td>1</td><td>1 × 25秒</td><td>1分</td><td></td><td>□</td></tr>
+<tr><td>4</td><td>3</td><td>0</td><td>0 × 25秒</td><td>0分</td><td></td><td>□</td></tr>
+</tbody>
+</table>
+
+<div class="table-title">表 1.6.3-1 全DATA_KIND設定値確認表</div>
+<table class="supplement-table">
+<thead>
+<tr>
+<th>No.</th>
+<th>DATA_KIND</th>
+<th>INIセクション</th>
+<th>DefaultPerCarTime</th>
+<th>確認結果</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>EventLog</td><td>[Timer_EventLog]</td><td>25000</td><td>□</td></tr>
+<tr><td>2</td><td>RTDM</td><td>[Timer_RTDM]</td><td>60000</td><td>□</td></tr>
+<tr><td>3</td><td>Diagnostic</td><td>[Timer_Diagnostic]</td><td>180000</td><td>□</td></tr>
+<tr><td>4</td><td>SelfTest</td><td>[Timer_SelfTest]</td><td>90000</td><td>□</td></tr>
+<tr><td>5</td><td>SubsystemSWVersion</td><td>[Timer_SubsystemSWVersion]</td><td>150000</td><td>□</td></tr>
+<tr><td>6</td><td>EDF</td><td>[Timer_EDF]</td><td>60000</td><td>□</td></tr>
+</tbody>
+</table>
+
+</body>
+</html>
