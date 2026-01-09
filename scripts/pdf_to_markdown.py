@@ -10,19 +10,25 @@ import fitz  # pymupdf
 
 def is_in_range(filename):
     """
-    Check if the PDF file is in the range 3.2.1 to 3.2.12
-    Examples: 3.2.1, 3.2.4, 3.2.5, 3.2.10.1, 3.2.11, etc.
+    すべてのPDFファイルを許可するように変更
     """
-    # Extract version number from filename (e.g., "3.2.4" or "3.2.10.1")
-    match = re.match(r'^(3\.2\.(\d+)(?:\.\d+)*)\s', filename)
-    if not match:
-        return False
+    return filename.endswith('.pdf')
 
-    # Get the main version number (e.g., 4 from 3.2.4, or 10 from 3.2.10.1)
-    main_version = int(match.group(2))
+#    """
+#    Check if the PDF file is in the range 3.2.1 to 3.2.12
+#    Examples: 3.2.1, 3.2.4, 3.2.5, 3.2.10.1, 3.2.11, etc.
+#    """
+#    # Extract version number from filename (e.g., "3.2.4" or "3.2.10.1")
+#    match = re.match(r'^(3\.2\.(\d+)(?:\.\d+)*)\s', filename)
+#    if not match:
+#        return False
 
-    # Check if it's in range 3.2.1 to 3.2.12
-    return 1 <= main_version <= 12
+#    # Get the main version number (e.g., 4 from 3.2.4, or 10 from 3.2.10.1)
+#    main_version = int(match.group(2))
+
+#    # Check if it's in range 3.2.1 to 3.2.12
+#    return 1 <= main_version <= 12
+
 
 def convert_pdf_to_markdown(pdf_path, md_path):
     """
