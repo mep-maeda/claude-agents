@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 PDF to Markdown Converter
 Converts PDF files (3.2.4 to 3.2.12) to Markdown format
@@ -10,7 +11,7 @@ import fitz  # pymupdf
 
 def is_in_range(filename):
     """
-    すべてのPDFファイルを許可するように変更
+    Process all PDF files
     """
     return filename.endswith('.pdf')
 
@@ -22,10 +23,10 @@ def is_in_range(filename):
 #    match = re.match(r'^(3\.2\.(\d+)(?:\.\d+)*)\s', filename)
 #    if not match:
 #        return False
-
+#
 #    # Get the main version number (e.g., 4 from 3.2.4, or 10 from 3.2.10.1)
 #    main_version = int(match.group(2))
-
+#
 #    # Check if it's in range 3.2.1 to 3.2.12
 #    return 1 <= main_version <= 12
 
